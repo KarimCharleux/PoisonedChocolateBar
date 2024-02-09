@@ -1,0 +1,63 @@
+body {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#tablette {
+    display: grid;
+    grid-template-columns: repeat(6, 50px);
+    grid-template-rows: repeat(3, 50px);
+    gap: 5px;
+    margin-bottom: 30px;
+}
+
+.carre {
+    background-color: #b84335;
+    border: 2px solid sienna;
+    border-radius: 5px;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+#manger {
+    width: 150px;
+    height: 50px;
+    background-color: #d75c47;
+    border: 2px solid #b84335;
+    border-radius: 5px;
+    transition: all 0.3s;
+    cursor: pointer;
+    margin-bottom: 30px;
+    font-size: 20px;
+    color: white;
+    font-weight: 900;
+}
+
+#manger:hover {
+    background-color: #b84335;
+    scale: 1.2;
+}
+
+#manger:active {
+    background-color: #d75c47;
+    scale: 1;
+}
+
+.carre:hover {
+    border: 3px solid navajowhite;
+}
+
+.carre.selectionne {
+    background-color: white;
+    border: 3px solid #b84335;
+}
+
+.empoisonne {
+    background-color: red;
+    border: 2px solid red;
+}
