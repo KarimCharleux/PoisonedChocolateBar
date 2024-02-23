@@ -91,6 +91,7 @@ function deplacerEmpoisonne() {
 function mangerCarrés() {
     const tablette = document.getElementById("tablette");
     const carresSelectionnes = Array.from(document.querySelectorAll(".carre.selectionne"));
+    const button = document.querySelector(".chocolate-button");
 
     if (carresSelectionnes.length === 0) {
         alert("Aucun carré sélectionné !");
@@ -113,6 +114,12 @@ function mangerCarrés() {
         carre.classList.remove("carre", "selectionne");
         carre.classList.add("carreDisabled");
     });
+
+    button.classList.add("chocolate-button-animate");
+    setTimeout(() => {
+        button.classList.remove("chocolate-button-animate");
+    }, 300);
+
 
     empoisonneDeplacable = false;
 }
