@@ -1,12 +1,20 @@
 document.addEventListener("DOMContentLoaded", function() {
     const creerTablette = document.getElementById("creerTablette");
     let estEnCoursDeSelection = false; // Pour suivre l'état de la sélection
+    let empoisonneDeplacable = true;
 
     creerTablette.addEventListener("click", function() {
         const lignes = parseInt(document.getElementById("lignes").value) || 3;
         const colonnes = parseInt(document.getElementById("colonnes").value) || 6;
 
         creerTabletteChocolat(lignes, colonnes);
+    });
+
+    const carreEmpoisonne = document.getElementById("carre-empoisonne");
+    carreEmpoisonne.addEventListener("click", function () {
+        if (empoisonneDeplacable) {
+            deplacerEmpoisonne();
+        }
     });
 
     // Gestionnaires d'événements pour la sélection des carrés
@@ -28,11 +36,20 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-creerTabletteChocolat(3, 6);
+let l = 3, c = 6;
 
+creerTabletteChocolat(l, c);
+
+const elButton = document.querySelector('.chocolate-button');
+
+elButton.addEventListener('mousedown', (event) => {
+  if (!elButton.matches(':focus')) { 
+    elButton.style.setProperty('--x', event.offsetX);
+    elButton.style.setProperty('--y', event.offsetY);
+  }
+});
 
 function creerTabletteChocolat(lignes, colonnes) {
-    let l, c;
     l = lignes;
     c = colonnes;
     const tablette = document.getElementById("tablette");
@@ -51,6 +68,23 @@ function creerTabletteChocolat(lignes, colonnes) {
             }
             tablette.appendChild(carre);
         }
+    }
+}
+
+function deplacerEmpoisonne() {
+    const tablette = document.getElementById("tablette");
+
+    const ancienEmpoisonne = document.querySelector(".carre.empoisonne");
+    if (ancienEmpoisonne) {
+        ancienEmpoisonne.classList.remove("empoisonne");
+    }
+
+    const ligneAleatoire = Math.floor(Math.random() * l);
+    const colonneAleatoire = Math.floor(Math.random() * c);
+
+    const nouveauEmpoisonne = document.querySelector(`.carre[data-ligne="${ligneAleatoire}"][data-colonne="${colonneAleatoire}"]`);
+    if (nouveauEmpoisonne) {
+        nouveauEmpoisonne.classList.add("empoisonne");
     }
 }
 
@@ -79,6 +113,8 @@ function mangerCarrés() {
         carre.classList.remove("carre", "selectionne");
         carre.classList.add("carreDisabled");
     });
+
+    empoisonneDeplacable = false;
 }
 
 function estSelectionValide(carresSelectionnes, nbLignes, nbColonnes) {
@@ -89,9 +125,14 @@ function estSelectionValide(carresSelectionnes, nbLignes, nbColonnes) {
     const lignesSelectionnees = carresSelectionnes.map(carre => parseInt(carre.getAttribute("data-ligne")));
     const colonnesSelectionnees = carresSelectionnes.map(carre => parseInt(carre.getAttribute("data-colonne")));
 
-    // Vérifier si tous les carrés sont sur la même ligne ou la même colonne
-    const estUneLigne = new Set(lignesSelectionnees).size === 1;
-    const estUneColonne = new Set(colonnesSelectionnees).size === 1;
+    console.log("lignesSelectionnees : ", lignesSelectionnees);
+    console.log("colonnesSelectionnees : ", colonnesSelectionnees);
+
+    // Vérifier si la sélection est une ligne ou une colonne complète
+    const uniqueLignes = new Set(lignesSelectionnees);
+    const uniqueColonnes = new Set(colonnesSelectionnees);
+    const estUneLigne = uniqueLignes.size === 1 && carresSelectionnes.length === nbColonnes;
+    const estUneColonne = uniqueColonnes.size === 1 && carresSelectionnes.length === nbLignes;
 
     if (!estUneLigne && !estUneColonne) {
         return false; // Ni une ligne ni une colonne complète
@@ -101,5 +142,5 @@ function estSelectionValide(carresSelectionnes, nbLignes, nbColonnes) {
     const ligneOuColonne = estUneLigne ? lignesSelectionnees[0] : colonnesSelectionnees[0];
     const estAuxExtremites = ligneOuColonne === 0 || ligneOuColonne === (estUneLigne ? nbLignes - 1 : nbColonnes - 1);
 
-    return estAuxExtremites && carresSelectionnes.length === (estUneLigne ? nbColonnes : nbLignes);
+    return estAuxExtremites;
 }
