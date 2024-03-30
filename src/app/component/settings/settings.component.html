@@ -1,0 +1,56 @@
+<form [formGroup]="chocoBarForm" (ngSubmit)="updateChocoBar()">
+  <h2>Paramètre de la tablette 🍫</h2>
+  <div class="input-container">
+    <mat-form-field>
+      <mat-label>Nombre de lignes</mat-label>
+      <input matInput placeholder="Ex. 6" type="number" min="{{minimumLines}}" max="{{maximumLines}}"
+             formControlName="nbLines" required>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Nombre de colonnes</mat-label>
+      <input matInput placeholder="Ex. 3" type="number" min="{{minimumColumns}}" max="{{maximumColumns}}"
+             formControlName="nbColumns" required>
+    </mat-form-field>
+  </div>
+
+  <button mat-raised-button color="primary" type="submit">Mettre à jour</button>
+</form>
+<form [formGroup]="chocoSquareForm" (ngSubmit)="updateChocoSquare()">
+  <h2>Position du carré 🟥</h2>
+  <div class="input-container">
+    <mat-form-field>
+      <mat-label>Position en X</mat-label>
+      <input matInput placeholder="Ex. 0" type="number" min="0" max="{{settingsService.getNbColumns()-1}}"
+             formControlName="poisonedSquareX" required>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Position en Y</mat-label>
+      <input matInput placeholder="Ex. 0" type="number" min="0" max="{{settingsService.getNbLines()-1}}"
+             formControlName="poisonedSquareY" required>
+    </mat-form-field>
+  </div>
+  <button mat-raised-button color="primary" type="submit">Positioner le carré rouge avec X et Y</button>
+  <p>- ou -</p>
+  @if (settingsService.getIsPoisonedSquarePositioned()) {
+    <button mat-raised-button color="primary" type="button" (click)="onClickPositionPoisonedSquare()" class="redBackground">Annuler le positionnement</button>
+  } @else {
+    <button mat-raised-button color="primary" type="button" (click)="onClickPositionPoisonedSquare()">Positionner le carré empoisonné</button>
+  }
+</form>
+<form [formGroup]="playersForm" (ngSubmit)="updatePlayers()">
+  <h2>Les joueurs 👫</h2>
+  <div class="input-container">
+    <mat-form-field>
+      <mat-label>Nom du joueur 1️⃣</mat-label>
+      <input matInput placeholder="Ex. Axel" formControlName="player1" type="text">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Nom du joueur 2️⃣</mat-label>
+      <input matInput placeholder="Ex. Karim" formControlName="player2" type="text">
+    </mat-form-field>
+  </div>
+  <button mat-raised-button color="primary" type="submit">Mettre à jour</button>
+</form>

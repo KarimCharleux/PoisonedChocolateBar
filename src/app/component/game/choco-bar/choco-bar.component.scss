@@ -1,0 +1,72 @@
+@import '../../../../styles.scss';
+
+.chocoBar {
+  display: grid;
+  gap: 2px;
+  margin: 40px auto;
+  padding-right: $squareSize;
+
+  .marker, .label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $brown-light;
+    cursor: default;
+    user-select: none;
+  }
+
+  .label {
+    font-size: 1.1em;
+    font-weight: bold;
+
+    &--x {
+      margin-left: $squareSize;
+    }
+
+    &--y {
+      position: absolute;
+      margin-bottom: -$squareSize;
+    }
+  }
+
+  .chocoSquare {
+    background-color: $brown;
+    border-radius: 5px;
+    transition: all 0.3s;
+    cursor: pointer;
+    border: 10px solid rgba(200, 200, 200, 0.4);
+    border-right-color: rgba(0, 0, 0, 0.4);
+    border-bottom-color: rgba(0, 0, 0, 0.2);
+    border-left-color: rgba(200, 200, 200, 0.2);
+
+    &:hover {
+      border: 5px solid rgba(200, 200, 200, 0.4)
+    }
+
+    &--selected {
+      background-color: white;
+      border: 5px solid chocolate;
+    }
+
+    &--poisoned {
+      background-color: red;
+      cursor: default;
+
+      &:hover {
+        border: 10px solid rgba(200, 200, 200, 0.4);
+        border-right-color: rgba(0, 0, 0, 0.4);
+        border-bottom-color: rgba(0, 0, 0, 0.2);
+        border-left-color: rgba(200, 200, 200, 0.2);
+      }
+    }
+
+    &--waiting {
+      background-color: $brown-light;
+      border: 5px solid $brown;
+
+      &:hover {
+        background-color: #ff3a3a;
+      }
+    }
+  }
+}

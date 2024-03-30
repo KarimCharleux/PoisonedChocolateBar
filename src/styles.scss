@@ -1,0 +1,34 @@
+// Colors
+$brown: rgb(136, 87, 46);
+$brown-light: #8a6748;
+$brown-dark: #432B16;
+$brown-darker: #553310;
+
+// Sizes
+$squareSize: 50px;
+
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  font-family: "Comfortaa", sans-serif;
+}
+
+h1, h2 {
+  text-align: center;
+  cursor: default;
+  user-select: none;
+  margin-top: 0;
+  color: $brown;
+}
+
+h1 {
+  font-family: "Homemade Apple", "Comfortaa", cursive !important;
+  width: 100%;
+  margin: 10px 0 0 0;
+  font-size: 3em;
+}
+
+p, h2, h3, h4, mat-label, input, button {
+  font-family: "Comfortaa", sans-serif !important;
+}

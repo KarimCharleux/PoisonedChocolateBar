@@ -1,0 +1,15 @@
+main {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  flex-wrap: wrap-reverse;
+
+  app-rules, app-settings {
+    margin: 10px;
+    min-width: 300px;
+  }
+
+  app-game, app-rules, app-settings {
+    width: 30%;
+  }
+}

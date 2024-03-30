@@ -1,0 +1,32 @@
+@import '../../../styles.scss';
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 5%;
+
+  p {
+    width: 100%;
+    text-align: center;
+  }
+
+  button {
+    background-color: $brown !important;
+  }
+
+  .redBackground {
+    background-color: #d33131 !important;
+  }
+
+  .input-container{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    mat-form-field {
+      width: 49%;
+    }
+  }
+}
