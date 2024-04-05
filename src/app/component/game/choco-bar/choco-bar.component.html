@@ -1,2 +1,27 @@
-<div #chocoBar class="chocoBar">
+<div class="chocoBar" style="grid-template-columns: repeat({{ settingsService.getNbColumns()+1 }}, {{chocoSquaresSize}}px); grid-template-rows: repeat({{ settingsService.getNbLines()+1 }}, {{chocoSquaresSize}}px)">
+    @if (allChocoSquares) {
+        <div class="label" style="grid-area: 1 / 1">
+            <span class="label--x">X →</span>
+            <span class="label--y">Y ↓</span>
+        </div>
+    }
+    @for (marker of markers; track marker.label+marker.line+marker.column) {
+        <div class="marker" style="grid-area: {{ marker.line }} / {{ marker.column }}">{{ marker.label}}</div>
+    }
+    @for (chocoSquare of allChocoSquares; track chocoSquare.id) {
+        @if (chocoSquare.isPoisoned) {
+            <div class="chocoSquare chocoSquare--poisoned"
+                 style="grid-area: {{ chocoSquare.line+2 }} / {{ chocoSquare.column+2 }}"></div>
+        } @else if (chocoSquare.isWaiting) {
+            <div class="chocoSquare chocoSquare--waiting"
+                 style="grid-area: {{ chocoSquare.line+2 }} / {{ chocoSquare.column+2 }}" (click)="handleClick(chocoSquare)"></div>
+        } @else if (chocoSquare.isSelected) {
+            <div class="chocoSquare chocoSquare--selected"
+                 style="grid-area: {{ chocoSquare.line+2 }} / {{ chocoSquare.column+2 }}" (click)="handleClick(chocoSquare)"></div>
+        } @else {
+            <div class="chocoSquare"
+                 style="grid-area: {{ chocoSquare.line+2 }} / {{ chocoSquare.column+2 }}" (click)="handleClick(chocoSquare)"></div>
+        }
+    }
 </div>
+

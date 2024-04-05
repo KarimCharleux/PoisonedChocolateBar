@@ -13,5 +13,6 @@ import {ChocoButtonComponent} from "./choco-button/choco-button.component";
   styleUrl: './game.component.scss'
 })
 export class GameComponent {
+  protected gameInstruction: string = "<b>Joueur</b> 1️⃣ à toi de manger ! 🍫";
 
 }

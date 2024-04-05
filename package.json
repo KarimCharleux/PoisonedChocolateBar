@@ -1,5 +1,5 @@
 {
-  "name": "chocolat-bar",
+  "name": "chocolate-bar",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:chocolat-bar": "node dist/chocolat-bar/server/server.mjs"
+    "serve:ssr:chocolate-bar": "node dist/chocolate-bar/server/server.mjs"
   },
   "private": true,
   "dependencies": {

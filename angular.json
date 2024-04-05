@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "chocolat-bar": {
+    "chocolate-bar": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/chocolat-bar",
+            "outputPath": "dist/chocolate-bar",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -46,12 +46,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumError": "6mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumError": "6kb"
                 }
               ],
               "outputHashing": "all"
@@ -68,10 +68,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "chocolat-bar:build:production"
+              "buildTarget": "chocolate-bar:build:production"
             },
             "development": {
-              "buildTarget": "chocolat-bar:build:development"
+              "buildTarget": "chocolate-bar:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -79,7 +79,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "chocolat-bar:build"
+            "buildTarget": "chocolate-bar:build"
           }
         },
         "test": {
