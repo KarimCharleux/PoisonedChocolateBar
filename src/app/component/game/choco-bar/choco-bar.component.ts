@@ -146,8 +146,11 @@ export class ChocoBarComponent {
                 return false;
             }
 
+            // Get the minimum value of the line of all chocolate squares
+            const topExtremity = this.allChocoSquares.reduce((acc: number, square: ChocolateSquare) => Math.min(acc, square.line), this.currentNbLines);
+
             // Validate only if at least one square is on the border
-            if (selectedSquare.some(square => square.line === 0 || square.line === this.currentNbLines - 1)) {
+            if (selectedSquare.some(square => square.line === topExtremity || square.line === this.currentNbLines - 1)) {
                 this.currentNbLines -= uniqueLines.length;
                 if (this.checkIfWeHaveAWinner()) {
                     this.settingsService.setWeHaveWinner(true);
@@ -184,8 +187,11 @@ export class ChocoBarComponent {
                 return false;
             }
 
+            // Get the minimum value of the column of all chocolate squares
+            const leftExtremity = this.allChocoSquares.reduce((acc: number, square: ChocolateSquare) => Math.min(acc, square.column), this.currentNbCol);
+
             // Validate only if at least one square is on the border
-            if (selectedSquare.some(square => square.column === 0 || square.column === this.currentNbCol - 1)) {
+            if (selectedSquare.some(square => square.column === leftExtremity || square.column === this.currentNbCol - 1)) {
                 this.currentNbCol -= uniqueColumns.length;
                 if (this.checkIfWeHaveAWinner()) {
                     this.settingsService.setWeHaveWinner(true);
