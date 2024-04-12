@@ -1,0 +1,17 @@
+@import '../../../../styles.scss';
+
+button {
+  background-color: $brown !important;
+  color: white;
+}
+
+mat-dialog-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+mat-dialog-actions {
+  justify-content: center;
+}

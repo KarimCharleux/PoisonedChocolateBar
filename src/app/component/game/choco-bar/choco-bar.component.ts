@@ -17,6 +17,8 @@ export class ChocoBarComponent {
     public allChocoSquares: Array<ChocolateSquare> = new Array<ChocolateSquare>();
     protected markers: Array<Marker> = new Array<Marker>();
     protected chocoSquaresSize: number = 50;
+    private currentNbLines: number = 0;
+    private currentNbCol: number = 0;
 
     constructor(protected settingsService: SettingsService,
                 private _snackBar: MatSnackBar) {
@@ -30,7 +32,9 @@ export class ChocoBarComponent {
         this.settingsService.getEatAction().subscribe((eatAction: boolean) => {
             if (eatAction) {
                 if (this.settingsService.getIsPoisonedSquarePositioned()) {
-                    this._snackBar.open('❌ Tu dois positionner la case empoisonnée avant de manger la tablette de chocolat !');
+                    this._snackBar.open('❌ Tu dois positionner la case empoisonnée avant de manger la tablette de chocolat !', 'OK', {
+                        duration: 1600,
+                    });
                 } else {
                     this.eatChocoBar();
                 }
@@ -41,16 +45,16 @@ export class ChocoBarComponent {
     public createChocoBar(): void {
         this.allChocoSquares = new Array<ChocolateSquare>();
         this.markers = new Array<Marker>();
-        const nbLines: number = this.settingsService.getNbLines();
-        const nbColumns: number = this.settingsService.getNbColumns();
+        this.currentNbLines = this.settingsService.getNbLines();
+        this.currentNbCol = this.settingsService.getNbColumns();
 
-        if (this.settingsService.getPoisonedSquareX() >= nbColumns || this.settingsService.getPoisonedSquareY() >= nbLines) {
+        if (this.settingsService.getPoisonedSquareX() >= this.currentNbCol || this.settingsService.getPoisonedSquareY() >= this.currentNbLines) {
             this.settingsService.setPoisonedSquareX(0);
             this.settingsService.setPoisonedSquareY(0);
         }
 
-        for (let line: number = 0; line < nbLines; line++) {
-            for (let column: number = 0; column < nbColumns; column++) {
+        for (let line: number = 0; line < this.currentNbLines; line++) {
+            for (let column: number = 0; column < this.currentNbCol; column++) {
                 // Add markers around the chocolate bar
                 if (line === 0) {
                     this.markers.push({
@@ -85,11 +89,13 @@ export class ChocoBarComponent {
             this.settingsService.setPoisonedSquareY(chocoSquare.line);
             this.settingsService.setPositionPoisonedSquare();
             this.settingsService.setNeedUpdate(true);
+            this._snackBar.open("✅ Carré empoisonné mise à jour !", 'OK', {
+                duration: 2000,
+            });
         } else {
             chocoSquare.isSelected = !chocoSquare.isSelected;
         }
     }
-
 
     private eatChocoBar() {
         if (this.allChocoSquares && this.isSelectionValid()) {
@@ -98,72 +104,105 @@ export class ChocoBarComponent {
     }
 
     private isSelectionValid(): boolean {
-        return true;
-        // // Verify if there is a selection
-        // if (selectedSquares.length === 0) {
-        //     this._snackBar.open('❌ On ne peut pas manger du vent 💨 ! Sélectionnez des cases à manger 🍫 !');
-        //     return false;
-        // }
-        //
-        // // Determine if the selection is a line or a column or both
-        // let isLine: boolean = false;
-        // let isColumn: boolean = false;
-        //
-        // selectedSquares.forEach((square: HTMLDivElement) => {
-        //     const line = parseInt(square.getAttribute('data-line') as string);
-        //     const column = parseInt(square.getAttribute('data-column') as string);
-        //     const lineSquares = Array.from(allSquares).filter((s: HTMLDivElement) => parseInt(s.getAttribute('data-line') as string) === line);
-        //     const columnSquares = Array.from(allSquares).filter((s: HTMLDivElement) => parseInt(s.getAttribute('data-column') as string) === column);
-        //     if (lineSquares.length === selectedSquares.length) {
-        //         isLine = true;
-        //     }
-        //     if (columnSquares.length === selectedSquares.length) {
-        //         isColumn = true;
-        //     }
-        // });
-        //
-        // console.log("selectedSquares", selectedSquares.length);
-        // console.log("isLine", isLine);
-        // console.log("isColumn", isColumn);
-        //
-        // if (!isLine && !isColumn) {
-        //     this._snackBar.open('❌ On ne peut manger qu\'une ligne ou une colonne à la fois !');
-        //     return false;
-        // }
-        //
-        // // Verify if the selection is complete
-        // let isComplete = true;
-        // if (isLine) {
-        //     const startLine = parseInt(selectedSquares[0].getAttribute('data-line') as string);
-        //     const endLine = parseInt(selectedSquares[selectedSquares.length - 1].getAttribute('data-line') as string);
-        //     for (let i = 0; i < allSquares.length; i++) {
-        //         const square = allSquares[i];
-        //         const line = parseInt(square.getAttribute('data-line') as string);
-        //         const column = parseInt(square.getAttribute('data-column') as string);
-        //         if (line >= startLine && line <= endLine && column === parseInt(selectedSquares[0].getAttribute('data-column') as string) && !square.classList.contains('chocoSquare--selected')) {
-        //             isComplete = false;
-        //             break;
-        //         }
-        //     }
-        // } else if (isColumn) {
-        //     const startColumn = parseInt(selectedSquares[0].getAttribute('data-column') as string);
-        //     const endColumn = parseInt(selectedSquares[selectedSquares.length - 1].getAttribute('data-column') as string);
-        //     for (let i = 0; i < allSquares.length; i++) {
-        //         const square = allSquares[i];
-        //         const line = parseInt(square.getAttribute('data-line') as string);
-        //         const column = parseInt(square.getAttribute('data-column') as string);
-        //         if (column >= startColumn && column <= endColumn && line === parseInt(selectedSquares[0].getAttribute('data-line') as string) && !square.classList.contains('chocoSquare--selected')) {
-        //             isComplete = false;
-        //             break;
-        //         }
-        //     }
-        // }
-        //
-        // console.log("isComplete", isComplete);
-        // console.log("\n");
-        //
-        // return isComplete;
+        // Filter the selected squares from all chocolate squares
+        const selectedSquare: ChocolateSquare[] = this.allChocoSquares.filter((chocoSquare: ChocolateSquare) => chocoSquare.isSelected);
+
+        // Check if no square has been selected
+        if (selectedSquare.length === 0) {
+            this._snackBar.open('❌ On ne peut pas manger du vent 💨 ! Sélectionne des cases à manger 🍫 !', 'OK', {
+                duration: 1600,
+            });
+            return false;
+        }
+
+        // Check if the number of selected squares is not a multiple of the number of lines or columns
+        if (selectedSquare.length % this.currentNbLines !== 0 && selectedSquare.length % this.currentNbCol !== 0) {
+            this._snackBar.open('❌ Tu dois manger une ou plusieurs lignes entières !', 'OK', {
+                duration: 1600,
+            });
+            return false;
+        }
+
+        // Grouping selected squares by columns to determine if the selection forms a valid line
+        const groupByColumn = selectedSquare.reduce((acc: any, square: any) => {
+            (acc[square.column] = acc[square.column] || []).push(square);
+            return acc;
+        }, {});
+
+        // Determine if the selection is a complete line by checking if the number of unique columns matches currentNbCol
+        const isLine: boolean = Object.keys(groupByColumn).length === this.currentNbCol;
+
+        if (isLine) {
+            // Extract unique line indices from the selection to detect duplicates
+            let uniqueLines = selectedSquare.map(square => square.line).filter((line, index, self) => self.indexOf(line) === index);
+
+            // Ensure that the number of unique lines matches the number of lines in each column
+            if ((selectedSquare.length / this.currentNbCol) !== uniqueLines.length) {
+                this._snackBar.open('❌ Tu dois manger une ou plusieurs lignes entières !', 'OK', {
+                    duration: 1600,
+                });
+                return false;
+            }
+
+            // Validate only if at least one square is on the border
+            if (selectedSquare.some(square => square.line === 0 || square.line === this.currentNbLines - 1)) {
+                this.currentNbLines -= uniqueLines.length;
+                if (this.checkIfWeHaveAWinner()) {
+                    this.settingsService.setWeHaveWinner(true);
+                } else {
+                    this.settingsService.setGoNextPlayer(true);
+                }
+                return true;
+            } else {
+                this._snackBar.open('❌ La ligne n\'est pas sur les extrémités !', 'OK', {
+                    duration: 1600,
+                });
+                return false;
+            }
+        }
+
+        // Grouping selected squares by lines to determine if the selection forms a valid column
+        const groupByLine = selectedSquare.reduce((acc: any, square: any) => {
+            (acc[square.line] = acc[square.line] || []).push(square);
+            return acc;
+        }, {});
+
+        // Determine if the selection is a complete column by checking if the number of unique lines matches currentNbLines
+        const isColumn: boolean = Object.keys(groupByLine).length === this.currentNbLines;
+
+        if (isColumn) {
+            // Extract unique column indices from the selection to detect duplicates
+            let uniqueColumns = selectedSquare.map(square => square.column).filter((column, index, self) => self.indexOf(column) === index);
+
+            // Ensure that the number of unique columns matches the number of columns in each line
+            if ((selectedSquare.length / this.currentNbLines) !== uniqueColumns.length) {
+                this._snackBar.open('❌ Tu dois manger une ou plusieurs colonnes entières !', 'OK', {
+                    duration: 1600,
+                });
+                return false;
+            }
+
+            // Validate only if at least one square is on the border
+            if (selectedSquare.some(square => square.column === 0 || square.column === this.currentNbCol - 1)) {
+                this.currentNbCol -= uniqueColumns.length;
+                if (this.checkIfWeHaveAWinner()) {
+                    this.settingsService.setWeHaveWinner(true);
+                } else {
+                    this.settingsService.setGoNextPlayer(true);
+                }
+                return true;
+            } else {
+                this._snackBar.open('❌ La colonne n\'est pas sur les extrémités !', 'OK', {
+                    duration: 1600,
+                });
+                return false;
+            }
+        }
+
+        return false;
     }
 
-    protected readonly Array = Array;
+    private checkIfWeHaveAWinner(): boolean {
+        return this.currentNbCol === 1 && this.currentNbLines === 1;
+    }
 }

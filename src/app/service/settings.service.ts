@@ -1,93 +1,118 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from "rxjs";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class SettingsService {
-  private nbLines: number = 6;
-  private nbColumns: number = 3;
-  private poisonedSquareX: number = 0;
-  private poisonedSquareY: number = 0;
-  private player1: string = "Joueur 1";
-  private player2: string = "Joueur 2";
-  private needUpdateSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private needUpdate$: Observable<boolean> = this.needUpdateSubject.asObservable();
-  private eatActionSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private eatAction$: Observable<boolean> = this.eatActionSubject.asObservable();
-  private isPoisonedSquarePositioned: boolean = false;
+    private nbLines: number = 6;
+    private nbColumns: number = 3;
+    private poisonedSquareX: number = 0;
+    private poisonedSquareY: number = 0;
+    private player1: string = "Joueur 1️⃣";
+    private player2: string = "Joueur 2️⃣";
+    private isPoisonedSquarePositioned: boolean = false;
 
-  constructor() { }
+    private goNextPlayerSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    private goNextPlayer$: Observable<boolean> = this.goNextPlayerSubject.asObservable();
 
-  public getNeedUpdate(): Observable<boolean> {
-    return this.needUpdate$;
-  }
+    private weHaveWinnerSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    private weHaveWinner$: Observable<boolean> = this.weHaveWinnerSubject.asObservable();
 
-  public setNeedUpdate(needUpdate: boolean): void {
-    this.needUpdateSubject.next(needUpdate);
-  }
+    private needUpdateSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    private needUpdate$: Observable<boolean> = this.needUpdateSubject.asObservable();
 
-  public getEatAction(): Observable<boolean> {
-    return this.eatAction$;
-  }
+    private eatActionSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    private eatAction$: Observable<boolean> = this.eatActionSubject.asObservable();
 
-  public setEatAction(eatAction: boolean): void {
-    this.eatActionSubject.next(eatAction);
-  }
+    constructor() {
+    }
 
-  public getNbLines(): number {
-    return this.nbLines;
-  }
+    public getNeedUpdate(): Observable<boolean> {
+        return this.needUpdate$;
+    }
 
-  public getNbColumns(): number {
-    return this.nbColumns;
-  }
+    public setNeedUpdate(needUpdate: boolean): void {
+        this.needUpdateSubject.next(needUpdate);
+    }
 
-  public getPlayer1(): string {
-    return this.player1;
-  }
+    public getEatAction(): Observable<boolean> {
+        return this.eatAction$;
+    }
 
-  public getPlayer2(): string {
-    return this.player2;
-  }
+    public setEatAction(eatAction: boolean): void {
+        this.eatActionSubject.next(eatAction);
+    }
 
-  public setNbLines(nbLines: number): void {
-    this.nbLines = nbLines;
-  }
+    public getNbLines(): number {
+        return this.nbLines;
+    }
 
-  public setNbColumns(nbColumns: number): void {
-    this.nbColumns = nbColumns;
-  }
+    public getNbColumns(): number {
+        return this.nbColumns;
+    }
 
-  public setPlayer1(player1: string): void {
-    this.player1 = player1;
-  }
+    public getPlayer1(): string {
+        return this.player1;
+    }
 
-  public setPlayer2(player2: string): void {
-    this.player2 = player2;
-  }
+    public getPlayer2(): string {
+        return this.player2;
+    }
 
-  public getPoisonedSquareX(): number {
-    return this.poisonedSquareX;
-  }
+    public setNbLines(nbLines: number): void {
+        this.nbLines = nbLines;
+    }
 
-  public getPoisonedSquareY(): number {
-    return this.poisonedSquareY;
-  }
+    public setNbColumns(nbColumns: number): void {
+        this.nbColumns = nbColumns;
+    }
 
-  public setPoisonedSquareX(poisonedSquareX: number): void {
-    this.poisonedSquareX = poisonedSquareX;
-  }
+    public setPlayer1(player1: string): void {
+        this.player1 = player1;
+    }
 
-  public setPoisonedSquareY(poisonedSquareY: number): void {
-    this.poisonedSquareY = poisonedSquareY;
-  }
+    public setPlayer2(player2: string): void {
+        this.player2 = player2;
+    }
 
-  public setPositionPoisonedSquare(): void {
-    this.isPoisonedSquarePositioned = !this.isPoisonedSquarePositioned;
-  }
+    public getPoisonedSquareX(): number {
+        return this.poisonedSquareX;
+    }
 
-  public getIsPoisonedSquarePositioned(): boolean {
-    return this.isPoisonedSquarePositioned;
-  }
+    public getPoisonedSquareY(): number {
+        return this.poisonedSquareY;
+    }
+
+    public setPoisonedSquareX(poisonedSquareX: number): void {
+        this.poisonedSquareX = poisonedSquareX;
+    }
+
+    public setPoisonedSquareY(poisonedSquareY: number): void {
+        this.poisonedSquareY = poisonedSquareY;
+    }
+
+    public setPositionPoisonedSquare(): void {
+        this.isPoisonedSquarePositioned = !this.isPoisonedSquarePositioned;
+    }
+
+    public getIsPoisonedSquarePositioned(): boolean {
+        return this.isPoisonedSquarePositioned;
+    }
+
+    public getWeHaveWinner(): Observable<boolean> {
+        return this.weHaveWinner$;
+    }
+
+    public setWeHaveWinner(weHaveWinner: boolean): void {
+        this.weHaveWinnerSubject.next(weHaveWinner);
+    }
+
+    public getGoNextPlayer(): Observable<boolean> {
+        return this.goNextPlayer$;
+    }
+
+    public setGoNextPlayer(goNextPlayer: boolean): void {
+        this.goNextPlayerSubject.next(goNextPlayer);
+    }
 }

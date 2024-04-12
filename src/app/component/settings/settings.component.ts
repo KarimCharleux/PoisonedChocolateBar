@@ -46,16 +46,22 @@ export class SettingsComponent {
             let nbLines = parseInt(<string>this.chocoBarForm.value.nbLines);
             let nbColumns = parseInt(<string>this.chocoBarForm.value.nbColumns);
             if ((nbLines <= 1 && nbColumns >= 2) || (nbLines >= 2 && nbColumns <= 1) || (nbLines < 2 && nbColumns < 2)) {
-                this._snackBar.open("❌ L'une des valeurs doit être supérieure à 1");
+                this._snackBar.open("❌ L'une des valeurs doit être supérieure à 1", 'OK', {
+                    duration: 2000,
+                });
                 return;
             }
             this.settingsService.setNbLines(nbLines);
             this.settingsService.setNbColumns(nbColumns);
-            this._snackBar.open("✅ Tablette de chocolat mise à jour ! Prêt à être mangée !");
+            this._snackBar.open("✅ Tablette de chocolat mise à jour ! Prêt à être mangée !", 'OK', {
+                duration: 2000,
+            });
             this.settingsService.setNeedUpdate(true);
             return;
         }
-        this._snackBar.open("❌ Les valeurs doivent être supérieures à 1 et inférieures à " + this.maximumColumns);
+        this._snackBar.open("❌ Les valeurs doivent être supérieures à 1 et inférieures à " + this.maximumColumns, 'OK', {
+            duration: 2000,
+        });
     }
 
     public updateChocoSquare(): void {
@@ -63,26 +69,36 @@ export class SettingsComponent {
             let poisonedSquareX = parseInt(<string>this.chocoSquareForm.value.poisonedSquareX);
             let poisonedSquareY = parseInt(<string>this.chocoSquareForm.value.poisonedSquareY);
             if (poisonedSquareX >= this.settingsService.getNbColumns() || poisonedSquareY >= this.settingsService.getNbLines()) {
-                this._snackBar.open("❌ Les valeurs doivent être inférieures à " + this.settingsService.getNbLines() + " pour x et " + this.settingsService.getNbColumns() + " pour y");
+                this._snackBar.open("❌ Les valeurs doivent être inférieures à " + this.settingsService.getNbLines() + " pour x et " + this.settingsService.getNbColumns() + " pour y", 'OK', {
+                    duration: 2000,
+                });
                 return;
             }
             this.settingsService.setPoisonedSquareX(poisonedSquareX);
             this.settingsService.setPoisonedSquareY(poisonedSquareY);
-            this._snackBar.open("✅ Carré empoisonné mise à jour !");
+            this._snackBar.open("✅ Carré empoisonné mise à jour !", 'OK', {
+                duration: 2000,
+            });
             this.settingsService.setNeedUpdate(true);
             return;
         }
-        this._snackBar.open("❌ Les valeurs doivent être inférieures à " + this.settingsService.getNbLines() + " pour x et " + this.settingsService.getNbColumns() + " pour y");
+        this._snackBar.open("❌ Les valeurs doivent être inférieures à " + this.settingsService.getNbLines() + " pour x et " + this.settingsService.getNbColumns() + " pour y", 'OK', {
+            duration: 2000,
+        });
     }
 
     public updatePlayers(): void {
         if (this.playersForm.valid) {
             if (this.playersForm.value.player1 === "" && this.playersForm.value.player2 === "") {
-                this._snackBar.open("❌ Les deux joueurs ne peuvent pas être vides !");
+                this._snackBar.open("❌ Les deux joueurs ne peuvent pas être vides !", 'OK', {
+                    duration: 2000,
+                });
                 return;
             }
             if (this.playersForm.value.player1 === this.playersForm.value.player2) {
-                this._snackBar.open("❌ Les deux joueurs ne peuvent pas avoir le même nom ! Tu veux te battre contre toi-même ?");
+                this._snackBar.open("❌ Les deux joueurs ne peuvent pas avoir le même nom ! Tu veux te battre contre toi-même ?", 'OK', {
+                    duration: 2000,
+                });
                 return;
             }
             if (this.playersForm.value.player1 !== "") {
@@ -91,12 +107,16 @@ export class SettingsComponent {
             if (this.playersForm.value.player2 !== "") {
                 this.settingsService.setPlayer2(<string>this.playersForm.value.player2);
             }
-            this._snackBar.open("✅ Joueurs mis à jour ! " + this.settingsService.getPlayer1() + " et " + this.settingsService.getPlayer2() + " sont prêts à se battre !");
+            this._snackBar.open("✅ Joueurs mis à jour ! " + this.settingsService.getPlayer1() + " et " + this.settingsService.getPlayer2() + " sont prêts à se battre !", 'OK', {
+                duration: 2000,
+            });
+            this.settingsService.setNeedUpdate(true);
             return;
         }
-        this._snackBar.open("❌ Au moins un des deux joueurs doit avoir un nom !");
+        this._snackBar.open("❌ Au moins un des deux joueurs doit avoir un nom !", 'OK', {
+            duration: 2000,
+        });
     }
-
 
     public onClickPositionPoisonedSquare(): void {
         this.settingsService.setPositionPoisonedSquare();
