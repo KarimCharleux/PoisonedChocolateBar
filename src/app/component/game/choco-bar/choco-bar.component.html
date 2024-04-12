@@ -17,10 +17,13 @@
                  style="grid-area: {{ chocoSquare.line+2 }} / {{ chocoSquare.column+2 }}" (click)="handleClick(chocoSquare)"></div>
         } @else if (chocoSquare.isSelected) {
             <div class="chocoSquare chocoSquare--selected"
-                 style="grid-area: {{ chocoSquare.line+2 }} / {{ chocoSquare.column+2 }}" (click)="handleClick(chocoSquare)"></div>
+                 (click)="handleClick(chocoSquare)"
+                 style="grid-area: {{ chocoSquare.line+2 }} / {{ chocoSquare.column+2 }}"></div>
         } @else {
             <div class="chocoSquare"
-                 style="grid-area: {{ chocoSquare.line+2 }} / {{ chocoSquare.column+2 }}" (click)="handleClick(chocoSquare)"></div>
+                 (mousedown)="startSelection(chocoSquare, false)"
+                 (mouseenter)="selectSquare(chocoSquare, false)"
+                 style="grid-area: {{ chocoSquare.line+2 }} / {{ chocoSquare.column+2 }}"></div>
         }
     }
 </div>

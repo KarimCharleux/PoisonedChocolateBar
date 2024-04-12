@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, HostListener} from '@angular/core';
 import {SettingsService} from "../../../service/settings.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {ChocolateSquare, Marker} from "./chocoSquare";
@@ -19,6 +19,8 @@ export class ChocoBarComponent {
     protected chocoSquaresSize: number = 50;
     private currentNbLines: number = 0;
     private currentNbCol: number = 0;
+    private isSelecting: boolean = false;
+    private isSelectingSelected: boolean = false;
 
     constructor(protected settingsService: SettingsService,
                 private _snackBar: MatSnackBar) {
@@ -204,5 +206,29 @@ export class ChocoBarComponent {
 
     private checkIfWeHaveAWinner(): boolean {
         return this.currentNbCol === 1 && this.currentNbLines === 1;
+    }
+
+    startSelection(chocoSquare: ChocolateSquare, isAlreadySelected: boolean): void {
+        if(!isAlreadySelected) {
+            this.isSelecting = true;
+        } else {
+            this.isSelectingSelected = true;
+        }
+        this.handleClick(chocoSquare); // Toggle the first square's selection state
+    }
+
+    @HostListener('document:mouseup', ['$event'])
+    onGlobalMouseUp(event: MouseEvent): void {
+        if (this.isSelecting) {
+            this.isSelecting = false;
+        }
+    }
+
+    selectSquare(chocoSquare: ChocolateSquare, isAlreadySelected: boolean): void {
+        if(!isAlreadySelected) {
+            if (this.isSelecting) { // Only select squares if the mouse is down
+                this.handleClick(chocoSquare);
+            }
+        }
     }
 }
