@@ -216,7 +216,7 @@ export class ChocoBarComponent {
     }
 
     startSelection(chocoSquare: ChocolateSquare): void {
-        if(!chocoSquare.isSelected) {
+        if (!chocoSquare.isSelected) {
             this.isSelecting = true;
         } else {
             this.isSelectingSelected = true;
@@ -229,13 +229,13 @@ export class ChocoBarComponent {
         if (this.isSelecting) {
             this.isSelecting = false;
         }
-        if(this.isSelectingSelected) {
+        if (this.isSelectingSelected) {
             this.isSelectingSelected = false;
         }
     }
 
     selectSquare(chocoSquare: ChocolateSquare): void {
-        if(!chocoSquare.isSelected) {
+        if (!chocoSquare.isSelected) {
             if (this.isSelecting) { // Only select squares if the mouse is down
                 this.handleClick(chocoSquare);
             }
@@ -243,6 +243,22 @@ export class ChocoBarComponent {
             if (this.isSelectingSelected) {
                 this.handleClick(chocoSquare);
             }
+        }
+    }
+
+    handleMarkers(marker: Marker) {
+        if (marker.line === 1) {
+            const column = this.allChocoSquares.filter((chocoSquare: ChocolateSquare) => chocoSquare.column === marker.column - 2);
+            let columnIsAlreadySelected = column.every((chocoSquare: ChocolateSquare) => chocoSquare.isSelected);
+            column.forEach((chocoSquare: ChocolateSquare) => {
+                chocoSquare.isSelected = !columnIsAlreadySelected;
+            });
+        } else if (marker.column === 1) {
+            const line = this.allChocoSquares.filter((chocoSquare: ChocolateSquare) => chocoSquare.line === marker.line - 2);
+            let lineIsAlreadySelected = line.every((chocoSquare: ChocolateSquare) => chocoSquare.isSelected);
+            line.forEach((chocoSquare: ChocolateSquare) => {
+                chocoSquare.isSelected = !lineIsAlreadySelected;
+            });
         }
     }
 }

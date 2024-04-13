@@ -6,7 +6,7 @@
         </div>
     }
     @for (marker of markers; track marker.label+marker.line+marker.column) {
-        <div class="marker" style="grid-area: {{ marker.line }} / {{ marker.column }}">{{ marker.label}}</div>
+        <div class="marker" style="grid-area: {{ marker.line }} / {{ marker.column }}" (click)="handleMarkers(marker)">{{ marker.label}}</div>
     }
     @for (chocoSquare of allChocoSquares; track chocoSquare.id) {
         @if (chocoSquare.isPoisoned) {
