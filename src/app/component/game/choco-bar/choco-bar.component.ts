@@ -95,7 +95,9 @@ export class ChocoBarComponent {
                 duration: 2000,
             });
         } else {
-            chocoSquare.isSelected = !chocoSquare.isSelected;
+            if (!chocoSquare.isPoisoned && !chocoSquare.isWaiting) {
+                chocoSquare.isSelected = !chocoSquare.isSelected;
+            }
         }
     }
 
@@ -248,13 +250,13 @@ export class ChocoBarComponent {
 
     handleMarkers(marker: Marker) {
         if (marker.line === 1) {
-            const column = this.allChocoSquares.filter((chocoSquare: ChocolateSquare) => chocoSquare.column === marker.column - 2);
+            const column = this.allChocoSquares.filter((chocoSquare: ChocolateSquare) => chocoSquare.column === marker.column - 2 && !chocoSquare.isPoisoned);
             let columnIsAlreadySelected = column.every((chocoSquare: ChocolateSquare) => chocoSquare.isSelected);
             column.forEach((chocoSquare: ChocolateSquare) => {
                 chocoSquare.isSelected = !columnIsAlreadySelected;
             });
         } else if (marker.column === 1) {
-            const line = this.allChocoSquares.filter((chocoSquare: ChocolateSquare) => chocoSquare.line === marker.line - 2);
+            const line = this.allChocoSquares.filter((chocoSquare: ChocolateSquare) => chocoSquare.line === marker.line - 2 && !chocoSquare.isPoisoned);
             let lineIsAlreadySelected = line.every((chocoSquare: ChocolateSquare) => chocoSquare.isSelected);
             line.forEach((chocoSquare: ChocolateSquare) => {
                 chocoSquare.isSelected = !lineIsAlreadySelected;
