@@ -154,6 +154,21 @@ export class ChocoBarComponent {
 
             // Validate only if at least one square is on the border
             if (selectedSquare.some(square => square.line === topExtremity || square.line === bottomExtremity)) {
+                console.log("uniqueLines", uniqueLines);
+                // Check if all lines are stick together
+                let isAllLinesStickTogether = uniqueLines.every((num, index) => {
+                    // If it's the last element, return true
+                    if (index === uniqueLines.length - 1) return true;
+                    // Check if the difference between the current element and the next one is 1
+                    return uniqueLines[index + 1] - num === 1;
+                });
+                if (!isAllLinesStickTogether) {
+                    this._snackBar.open('❌ Les lignes sélectionnées ne sont pas collées !', 'OK', {
+                        duration: 1600,
+                    });
+                    return false;
+                }
+
                 this.currentNbLines -= uniqueLines.length;
                 if (this.checkIfWeHaveAWinner()) {
                     this.settingsService.setWeHaveWinner(true);
@@ -195,6 +210,20 @@ export class ChocoBarComponent {
             const rightExtremity = this.allChocoSquares.reduce((acc: number, square: ChocolateSquare) => Math.max(acc, square.column), 0);
             // Validate only if at least one square is on the border
             if (selectedSquare.some(square => square.column === leftExtremity || square.column === rightExtremity)) {
+                // Check if all columns are stick together
+                let isAllColumnsStickTogether = uniqueColumns.every((num, index) => {
+                    // If it's the last element, return true
+                    if (index === uniqueColumns.length - 1) return true;
+                    // Check if the difference between the current element and the next one is 1
+                    return uniqueColumns[index + 1] - num === 1;
+                });
+                if (!isAllColumnsStickTogether) {
+                    this._snackBar.open('❌ Les colonnes sélectionnées ne sont pas collées !', 'OK', {
+                        duration: 1600,
+                    });
+                    return false;
+                }
+
                 this.currentNbCol -= uniqueColumns.length;
                 if (this.checkIfWeHaveAWinner()) {
                     this.settingsService.setWeHaveWinner(true);
