@@ -5,10 +5,10 @@ import {BehaviorSubject, Observable} from "rxjs";
     providedIn: 'root'
 })
 export class SettingsService {
-    private nbLines: number = 6;
-    private nbColumns: number = 3;
-    private poisonedSquareX: number = 0;
-    private poisonedSquareY: number = 0;
+    private nbLines: number = 5;
+    private nbColumns: number = 5;
+    private poisonedSquareX: number = 2;
+    private poisonedSquareY: number = 2;
     private player1: string = "Joueur 1️⃣";
     private player2: string = "Joueur 2️⃣";
     private isPoisonedSquarePositioned: boolean = false;

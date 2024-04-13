@@ -148,9 +148,10 @@ export class ChocoBarComponent {
 
             // Get the minimum value of the line of all chocolate squares
             const topExtremity = this.allChocoSquares.reduce((acc: number, square: ChocolateSquare) => Math.min(acc, square.line), this.currentNbLines);
+            const bottomExtremity = this.allChocoSquares.reduce((acc: number, square: ChocolateSquare) => Math.max(acc, square.line), 0);
 
             // Validate only if at least one square is on the border
-            if (selectedSquare.some(square => square.line === topExtremity || square.line === this.currentNbLines - 1)) {
+            if (selectedSquare.some(square => square.line === topExtremity || square.line === bottomExtremity)) {
                 this.currentNbLines -= uniqueLines.length;
                 if (this.checkIfWeHaveAWinner()) {
                     this.settingsService.setWeHaveWinner(true);
@@ -189,9 +190,9 @@ export class ChocoBarComponent {
 
             // Get the minimum value of the column of all chocolate squares
             const leftExtremity = this.allChocoSquares.reduce((acc: number, square: ChocolateSquare) => Math.min(acc, square.column), this.currentNbCol);
-
+            const rightExtremity = this.allChocoSquares.reduce((acc: number, square: ChocolateSquare) => Math.max(acc, square.column), 0);
             // Validate only if at least one square is on the border
-            if (selectedSquare.some(square => square.column === leftExtremity || square.column === this.currentNbCol - 1)) {
+            if (selectedSquare.some(square => square.column === leftExtremity || square.column === rightExtremity)) {
                 this.currentNbCol -= uniqueColumns.length;
                 if (this.checkIfWeHaveAWinner()) {
                     this.settingsService.setWeHaveWinner(true);
@@ -214,8 +215,8 @@ export class ChocoBarComponent {
         return this.currentNbCol === 1 && this.currentNbLines === 1;
     }
 
-    startSelection(chocoSquare: ChocolateSquare, isAlreadySelected: boolean): void {
-        if(!isAlreadySelected) {
+    startSelection(chocoSquare: ChocolateSquare): void {
+        if(!chocoSquare.isSelected) {
             this.isSelecting = true;
         } else {
             this.isSelectingSelected = true;
@@ -228,11 +229,18 @@ export class ChocoBarComponent {
         if (this.isSelecting) {
             this.isSelecting = false;
         }
+        if(this.isSelectingSelected) {
+            this.isSelectingSelected = false;
+        }
     }
 
-    selectSquare(chocoSquare: ChocolateSquare, isAlreadySelected: boolean): void {
-        if(!isAlreadySelected) {
+    selectSquare(chocoSquare: ChocolateSquare): void {
+        if(!chocoSquare.isSelected) {
             if (this.isSelecting) { // Only select squares if the mouse is down
+                this.handleClick(chocoSquare);
+            }
+        } else {
+            if (this.isSelectingSelected) {
                 this.handleClick(chocoSquare);
             }
         }
